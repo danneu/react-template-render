@@ -9,10 +9,10 @@ Not intended to be used for anything more clever that 100% server-side rendering
 ```javascript
 const makeRender = require('react-template-render')
 
-const render = makeRender('./views', { parent: 'parent.jsx' })
+const render = makeRender('./views', { parent: 'parent' })
 
-render.string('template.jsx', { foo: 42 }) // Buffer to memory
-render.stream('template.jsx', { foo: 42 }) // Stream response
+render.string('template', { foo: 42 }) // Buffer to memory
+render.stream('template', { foo: 42 }) // Stream response
 ```
 
 ## Usage
@@ -25,16 +25,10 @@ These are the default options.
 ```javascript
 const makeRender = require('react-template-render')
 const render = makeRender('./views', {
-    locals: {},
-    ext: '.jsx',
     parent: null,
 })
 ```
 
-* `locals` gets passed into every template. Template-level locals override them. Since you can just `require()` librarys
-  from your jsx files, this isn't as useful as it is in other templating libs.
-* `ext` is appended to the end of your template if you leave off an extension. For example, it lets you write
-  `render('show-user')` instead of `render('show-user.jsx')`.
 * `parent` is a template path (thus relative to the root) of a parent template that will receive your rendered template
   as a child (`<parent>child</parent>`).
 
@@ -59,13 +53,18 @@ require('babel-register')({
 
     npm i babel-register babel-preset-react babel-plugin-transform-object-rest-spread
 
+For info on precompiling, check out: https://github.com/babel/example-node-server#getting-ready-for-production-use
+
+Note that if you precompile, babel, will change ".jsx" extensions to ".js" which will break your `require()`. My
+solution is to just leave off the extension entirely.
+
 ## Extras
 
 This library provides some extra features:
 
-* Implements template inheritance. Set the `{ parent: 'parent-template.jsx' }` option (or override it per-template) to
-  choose a parent component. Your template component will be passed to it as its child: `<Parent><Child /><Parent>`. The
-  parent just has to render its `children` prop: `Parent = ({children}) => <div>{children}</div>`.
+* Implements template inheritance. Set the `{ parent: 'parent-template' }` option (or override it per-template) to
+  choose a parent component. Your template component will be passed to it as its child: `<Parent><Child /></Parent>`.
+  The parent just has to render its `children` prop: `Parent = ({children}) => <div>{children}</div>`.
 * Prepends its html output with the `<!doctype html>` directive since you're unable to create that node yourself in jsx.
 
 ## Benefits of jsx on the server
@@ -85,8 +84,8 @@ This library provides some extra features:
 
 ## Koa example
 
-Here's how you could write koa middleware that implements the familiar `ctx.render('template.jsx', { foo: 'bar' })`
-method which streams directly to the response.
+Here's how you could write koa middleware that implements the familiar `ctx.render('template', { foo: 'bar' })` method
+which streams directly to the response.
 
 ```javascript
 const makeRenderer = require('react-template-render')
@@ -97,7 +96,7 @@ const middleware = (root, opts) => {
         //
         // e.g. Maybe you want to cache some html output to disk:
         //
-        //     const html = ctx.renderer.string('template.jsx')
+        //     const html = ctx.renderer.string('template')
         //     await writeFile(html, { encoding: 'utf8' })
         //
         ctx.renderer = makeRenderer(root, opts)
@@ -121,12 +120,12 @@ app.get('/users/:id', async ctx => {
     const user = await db.getUser(id)
     ctx.assert(user, 404)
     ctx.render(
-        'show-user.jsx',
+        'show-user',
         {
             title: `Profile of ${user.uname}`,
             user,
         },
-        { parent: 'dashboard.jsx' }
+        { parent: 'dashboard' }
     )
 })
 ```

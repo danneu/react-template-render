@@ -1,32 +1,31 @@
 const { PassThrough } = require('stream')
-const { extname, join } = require('path')
+const { join } = require('path')
 const React = require('react')
 const { renderToStaticNodeStream, renderToStaticMarkup } = require('react-dom/server')
 const debug = require('debug')('react-template-render')
 
 const defaultOptions = () => ({
     locals: {},
-    ext: '.jsx',
     parent: null,
 })
 
 // The render object has two methods { string(), stream() }
 // It can be reused.
 module.exports = function makeRender(root, opts) {
-    opts = { ...defaultOptions(), ...opts }
+    opts = Object.assign({}, defaultOptions(), opts)
 
     const getElement = (template, locals = {}, overrides = {}) => {
-        opts = { ...opts, ...overrides }
+        opts = Object.assign({}, opts, overrides)
 
         const Parent = (() => {
             if (!opts.parent) return null
-            const parentpath = join(root, extname(opts.parent) ? opts.parent : opts.parent + opts.ext)
+            const parentpath = join(root, opts.parent)
             debug('parentpath:', parentpath)
             return require(parentpath)
         })()
 
         const Template = (() => {
-            const templatepath = join(root, extname(template) ? template : template + opts.ext)
+            const templatepath = join(root, template)
             debug('templatepath:', templatepath)
             return require(templatepath)
         })()
