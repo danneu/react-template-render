@@ -51,11 +51,10 @@ Put this at the top of your server's entry-point:
 ```javascript
 require('babel-register')({
     presets: ['react'],
-    plugins: ['transform-object-rest-spread'],
 })
 ```
 
-    npm i babel-register babel-preset-react babel-plugin-transform-object-rest-spread
+    npm i babel-register babel-preset-react
 
 For info on precompiling, check out: https://github.com/babel/example-node-server#getting-ready-for-production-use
 
