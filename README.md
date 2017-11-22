@@ -11,14 +11,17 @@ const makeRender = require('react-template-render')
 
 const render = makeRender('./views', { parent: 'parent' })
 
-render.string('template', { foo: 42 }) // Buffer to memory
-render.stream('template', { foo: 42 }) // Stream response
+// As string
+render.string('template', { foo: 42 })
+
+// As stream
+render.stream('template', { foo: 42 })
 ```
 
 ## Usage
 
 The library exports a single function that takes some options and returns a renderer. The first argument is required as
-it specifies the directory that holds your templates.
+it specifies the directory that holds your .jsx templates.
 
 These are the default options.
 
@@ -55,8 +58,11 @@ require('babel-register')({
 
 For info on precompiling, check out: https://github.com/babel/example-node-server#getting-ready-for-production-use
 
-Note that if you precompile, babel, will change ".jsx" extensions to ".js" which will break your `require()`. My
+Note that if you precompile, babel will change ".jsx" extensions to ".js" which will break your `require()`s. My
 solution is to just leave off the extension entirely.
+
+This way, your code will work in development since Babel resolves ".jsx" files, yet it will still work after
+compilation.
 
 ## Extras
 
@@ -66,6 +72,45 @@ This library provides some extra features:
   choose a parent component. Your template component will be passed to it as its child: `<Parent><Child /></Parent>`.
   The parent just has to render its `children` prop: `Parent = ({children}) => <div>{children}</div>`.
 * Prepends its html output with the `<!doctype html>` directive since you're unable to create that node yourself in jsx.
+
+Example parent.jsx:
+
+```javascript
+const React = require('react')
+
+module.exports = ({ children, title }) => (
+    <html>
+        <head>
+            <title>{title ? title + ' - Example.com' : 'The Best Example - Example.com'}</title>
+        </head>
+        <body>{children}</body>
+    </html>
+)
+```
+
+Example child.jsx:
+
+```javascript
+const React = require('react')
+
+module.exports = ({ greeting }) => <div>{greeting}, world!</div>
+```
+
+All togther:
+
+```javascript
+const html = render('child', { greeting: 'hello', title: "child's title" }, { parent: 'parent' })
+```
+
+```html
+<!doctype html>
+<html>
+    <head>
+        <title>child's title - Example.com</title>
+    </head>
+    <body>hello, world!</body>
+</html>
+```
 
 ## Benefits of jsx on the server
 
