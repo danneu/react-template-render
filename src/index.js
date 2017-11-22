@@ -5,7 +5,7 @@ const { renderToStaticNodeStream, renderToStaticMarkup } = require('react-dom/se
 const debug = require('debug')('react-template-render')
 
 const defaultOptions = () => ({
-    locals: {},
+    prefix: '<!doctype html>',
     parent: null,
 })
 
@@ -39,13 +39,15 @@ module.exports = function makeRender(root, opts) {
         stream(template, locals, overrides) {
             const element = getElement(template, locals, overrides)
             const output = new PassThrough()
-            output.write('<!doctype html>')
+            if (opts.prefix) {
+                output.write(opts.prefix)
+            }
             renderToStaticNodeStream(element).pipe(output)
             return output
         },
         string(template, locals, overrides) {
             const element = getElement(template, locals, overrides)
-            return '<!doctype html>' + renderToStaticMarkup(element)
+            return (opts.prefix || '') + renderToStaticMarkup(element)
         },
     }
 }

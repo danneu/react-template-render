@@ -29,6 +29,7 @@ These are the default options.
 const makeRender = require('react-template-render')
 const render = makeRender('./views', {
     parent: null,
+    prefix: '<!doctype html>',
 })
 ```
 
