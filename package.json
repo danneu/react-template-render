@@ -1,0 +1,21 @@
+{
+    "name": "react-template-render",
+    "version": "0.0.0",
+    "author": "danneu",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/danneu/react-template-render"
+    },
+    "main": "src/index.js",
+    "scripts": {
+        "patch": "npm version patch && npm publish",
+        "minor": "npm version minor && npm publish",
+        "major": "npm version major && npm publish",
+        "postpublish": "git push origin master --follow-tags"
+    },
+    "dependencies": {
+        "react": "^16.1.1",
+        "react-dom": "^16.1.1"
+    },
+    "license": "MIT"
+}
