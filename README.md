@@ -118,13 +118,14 @@ const html = render('child', { greeting: 'hello', title: "child's title" }, { pa
 * You can just `require()` code you need directly from your templates.
 * It's trivial to break apart a template into bite-sized components.
 * It's streamable.
+* You can validate the data passed into your templates with React's
+  [PropTypes](https://reactjs.org/docs/typechecking-with-proptypes.html).
 
 ## Drawbacks
 
 * Needs to be compiled.
 * I miss some of Pug's ergonomics like being able to pleasantly write an inline `script.` / filter when it's the
   simplest solution.
-* Not as fast as Pug.
 * Have to deal with React's "children must have keys" warnings even though you don't need them.
 
 ## Koa example
