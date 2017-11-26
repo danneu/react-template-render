@@ -1,5 +1,5 @@
 require('babel-register')({
-    presets: [['react']],
+    presets: ['react'],
     extensions: ['.jsx'],
 })
 
