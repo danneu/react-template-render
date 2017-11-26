@@ -177,3 +177,11 @@ app.get('/users/:id', async ctx => {
     )
 })
 ```
+
+## Tips and notes
+
+* Remember that `React` must be in scope of your jsx templates. i.e. just put `const React = require('react')` as the
+  first line of every .jsx file.
+* Remember to set `NODE_ENV=production` in production which will significantly speed up React rendering.
+* This library uses `require(template)` to load templates which means that templates are loaded synchronously and cached
+  for the process lifetime until the server is reset.
