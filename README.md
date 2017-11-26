@@ -18,7 +18,7 @@ render.string('template', { foo: 42 })
 render.stream('template', { foo: 42 })
 ```
 
-Check out the `example/` folder for a minimal demo using Koa.
+Check out the `example/` folder for a minimal demo using Koa: `cd example && npm install && npm start`.
 
 ## Usage
 
