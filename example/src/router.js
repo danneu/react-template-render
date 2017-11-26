@@ -28,6 +28,24 @@ router.get('/', async ctx => {
     await ctx.render('homepage')
 })
 
+// Example: Here we cache the html of our static /about page
+// since it never changes.
+
+let aboutHtml
+
+router.get('/about', async ctx => {
+    ctx.type = 'html'
+
+    if (aboutHtml) {
+        ctx.body = aboutHtml
+        return
+    }
+    console.log('caching aboutHtml...')
+
+    aboutHtml = ctx.renderer.string('about')
+    ctx.body = aboutHtml
+})
+
 router.get('/users', async ctx => {
     const users = Object.values(allUsers)
     await ctx.render('users-list', {

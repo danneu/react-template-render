@@ -4,12 +4,14 @@ require('babel-register')({
 })
 
 const Koa = require('koa')
+const logger = require('koa-logger')
 const renderMiddleware = require('./renderware')
 
 const viewsDir = require('path').join(__dirname, 'views')
 
 const app = new Koa()
 
+app.use(logger())
 app.use(
     renderMiddleware(viewsDir, {
         parent: 'master',
