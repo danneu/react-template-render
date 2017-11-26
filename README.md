@@ -196,3 +196,6 @@ app.get('/users/:id', async ctx => {
 * This library uses `require(template)` to load templates which means that templates are loaded synchronously and cached
   for the process lifetime until the server is reset. Just use `nodemon --ext jsx server.js` in development to trigger
   server reboot.
+* This library uses the [debug](https://www.npmjs.com/package/debug) module to print out useful input. If you're having
+  trouble getting your template paths to load, boot your server with `DEBUG=react-template-render` to see the
+  parent/child paths that this library is attempting to load.
