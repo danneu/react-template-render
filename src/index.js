@@ -4,15 +4,15 @@ const React = require('react')
 const { renderToStaticNodeStream, renderToStaticMarkup } = require('react-dom/server')
 const debug = require('debug')('react-template-render')
 
-const defaultOptions = () => ({
+const defaultOptions = {
     prefix: '<!doctype html>',
     parent: null,
-})
+}
 
 // The render object has two methods { string(), stream() }
 // It can be reused.
 module.exports = function makeRender(root, opts) {
-    opts = Object.assign({}, defaultOptions(), opts)
+    opts = Object.assign({}, defaultOptions, opts)
 
     const getElement = (template, locals = {}, overrides = {}) => {
         opts = Object.assign({}, opts, overrides)

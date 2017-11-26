@@ -9,9 +9,13 @@ Not intended to be used for anything more clever that 100% server-side rendering
 ```javascript
 const makeRender = require('react-template-render')
 
-const render = makeRender('./views', { parent: 'parent' })
+const root = require('path').join(__dirname, 'views')
+
+// `render` is an object with two functions: { string(), stream() }
+const render = makeRender(root, { parent: 'parent' })
 
 // As string
+// Expects files ./views/template.jsx and ./views/parent.jsx to exist
 render.string('template', { foo: 42 })
 
 // As stream

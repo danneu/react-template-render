@@ -1,7 +1,8 @@
 {
     "private": true,
     "scripts": {
-        "start": "node src"
+        "start": "node src",
+        "start-dev": "nodemon --ext jsx src"
     },
     "dependencies": {
         "babel-preset-react": "^6.24.1",
