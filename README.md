@@ -33,7 +33,8 @@ These are the default options.
 
 ```javascript
 const makeRender = require('react-template-render')
-const render = makeRender('./views', {
+const root = require('path').join(__dirname, 'views')
+const render = makeRender(root, {
     parent: null,
     prefix: '<!doctype html>',
 })
@@ -57,6 +58,7 @@ Put this at the top of your server's entry-point:
 ```javascript
 require('babel-register')({
     presets: ['react'],
+    extensions: ['.jsx'],
 })
 ```
 
@@ -64,11 +66,11 @@ require('babel-register')({
 
 For info on precompiling, check out: https://github.com/babel/example-node-server#getting-ready-for-production-use
 
-Note that if you precompile, babel will change ".jsx" extensions to ".js" which will break your `require()`s. My
-solution is to just leave off the extension entirely.
+Note that if you precompile, babel will change ".jsx" extensions to ".js" which will break your `require()`s if you use
+`require('homepage.jsx')` instead of `require('homepage')`. My solution is to just leave off the extension entirely.
 
-This way, your code will work in development since Babel resolves ".jsx" files, yet it will still work after
-compilation.
+This way, your code will work in development since Babel resolves ".jsx" files, yet it will still work after compilation
+since `require` natively works with ".js" files.
 
 ## Extras
 
@@ -105,7 +107,11 @@ module.exports = ({ greeting }) => <div>{greeting}, world!</div>
 All togther:
 
 ```javascript
-const html = render('child', { greeting: 'hello', title: "child's title" }, { parent: 'parent' })
+const makeRender = require('react-template-render')
+const root = require('path').join(__dirname, 'views')
+const render = makeRender(root, { parent: 'parent' })
+
+const html = render('child', { greeting: 'hello', title: "child's title" })
 ```
 
 ```html
@@ -132,12 +138,15 @@ const html = render('child', { greeting: 'hello', title: "child's title" }, { pa
 * Needs to be compiled.
 * I miss some of Pug's ergonomics like being able to pleasantly write an inline `script.` / filter when it's the
   simplest solution.
-* Have to deal with React's "children must have keys" warnings even though you don't need them.
+* Have to deal with React's "children must have keys" warnings even though the warning doesn't apply to you.
 
 ## Koa example
 
-Here's how you could write koa middleware that implements the familiar `ctx.render('template', { foo: 'bar' })` method
-which streams directly to the response.
+A fully working Koa example can be found in the `example/` folder.
+
+    cd example && npm install && npm start
+
+But for the sake of readme skimmability, here's the gist of what the Koa middleware would look like:
 
 ```javascript
 const makeRenderer = require('react-template-render')
@@ -165,20 +174,17 @@ const middleware = (root, opts) => {
 
 const app = new Koa()
 
-app.use(middleware(require('path').join(__dirname, 'views')))
+const root = require('path').join(__dirname, 'views')
+app.use(middleware(root, { parent: 'layout' }))
 
 app.get('/users/:id', async ctx => {
     const { id } = ctx.params
     const user = await db.getUser(id)
     ctx.assert(user, 404)
-    ctx.render(
-        'show-user',
-        {
-            title: `Profile of ${user.uname}`,
-            user,
-        },
-        { parent: 'dashboard' }
-    )
+    ctx.render('show-user', {
+        title: `Profile of ${user.uname}`,
+        user,
+    })
 })
 ```
 
@@ -188,4 +194,5 @@ app.get('/users/:id', async ctx => {
   first line of every .jsx file.
 * Remember to set `NODE_ENV=production` in production which will significantly speed up React rendering.
 * This library uses `require(template)` to load templates which means that templates are loaded synchronously and cached
-  for the process lifetime until the server is reset.
+  for the process lifetime until the server is reset. Just use `nodemon --ext jsx server.js` in development to trigger
+  server reboot.
