@@ -18,6 +18,8 @@ render.string('template', { foo: 42 })
 render.stream('template', { foo: 42 })
 ```
 
+Check out the `example/` folder for a minimal demo using Koa.
+
 ## Usage
 
 The library exports a single function that takes some options and returns a renderer. The first argument is required as
