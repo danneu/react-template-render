@@ -1,4 +1,4 @@
-# react-template-render [![npm version](https://badge.fury.io/js/react-template-render.svg)](https://badge.fury.io/js/react-template-render)
+# react-template-render [![npm version](https://badge.fury.io/js/react-template-render.svg)](https://badge.fury.io/js/react-template-render) [![dependency status](https://david-dm.org/danneu/react-template-render.svg)](https://david-dm.org/danneu/react-template-render)
 
     npm install react-template-render
 
