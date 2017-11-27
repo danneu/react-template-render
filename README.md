@@ -202,4 +202,4 @@ app.get('/users/:id', async ctx => {
 * Name your components with assignment, e.g. `const Component = () => <div></div>; module.exports = Component`. This
   way, React can tell you the name of the component in its debug/warning output. If you instead wrote this:
   `module.exports = () => <div></div>` or `const Component = module.exports = () => <div></div>`, then React will not be
-  able to discern the name and the component would show up unhelpfully as "Unknown".
+  able to discern the name and the component will show up unhelpfully as "Unknown".
