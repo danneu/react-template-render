@@ -199,3 +199,7 @@ app.get('/users/:id', async ctx => {
 * This library uses the [debug](https://www.npmjs.com/package/debug) module to print out useful input. If you're having
   trouble getting your template paths to load, boot your server with `DEBUG=react-template-render` to see the
   parent/child paths that this library is attempting to load.
+* Name your components with assignment, e.g. `const Component = () => <div></div>; module.exports = Component`. This
+  way, React can tell you the name of the component in its debug/warning output. If you instead wrote this:
+  `module.exports = () => <div></div>` or `const Component = module.exports = () => <div></div>`, then React will not be
+  able to discern the name and the component would show up unhelpfully as "Unknown".
