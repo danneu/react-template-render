@@ -7,12 +7,29 @@ const debug = require('debug')('react-template-render')
 const defaultOptions = {
     prefix: '<!doctype html>',
     parent: null,
+    // If false, silence React's https://fb.me/react-warning-keys warning.
+    keyPropWarnings: true,
 }
 
 // The render object has two methods { string(), stream() }
 // It can be reused.
 module.exports = function makeRender(root, opts) {
     opts = Object.assign({}, defaultOptions, opts)
+
+    if (process.env.NODE_ENV !== 'production' && !opts.keyPropWarnings) {
+        console.error = (() => {
+            const _error = console.error
+            const re = /^Warning: Each child in an array or iterator should have a unique "key" prop/
+            return (...args) => {
+                const line = args[0]
+                if (re.test(line)) {
+                    // Ignore key warnings
+                } else {
+                    _error(...args)
+                }
+            }
+        })()
+    }
 
     const getElement = (template, locals = {}, overrides = {}) => {
         opts = Object.assign({}, opts, overrides)

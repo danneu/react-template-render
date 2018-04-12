@@ -37,11 +37,14 @@ const root = require('path').join(__dirname, 'views')
 const render = makeRender(root, {
     parent: null,
     prefix: '<!doctype html>',
+    keyPropWarnings: true,
 })
 ```
 
-* `parent` is a template path (thus relative to the root) of a parent template that will receive your rendered template
+- `parent` is a template path (thus relative to the root) of a parent template that will receive your rendered template
   as a child (`<parent>child</parent>`).
+- `keyPropWarnings` determines whether to print React's <https://fb.me/react-warning-keys> warnings in development.
+  Setting this to false silences those warnings since they don't apply to server-side rendering.
 
 These options can be overridden ad-hoc via the third argument to `.string()`/`.stream()`:
 
@@ -138,7 +141,6 @@ const html = render('child', { greeting: 'hello', title: "child's title" })
 * Needs to be compiled.
 * I miss some of Pug's ergonomics like being able to pleasantly write an inline `script.` / filter when it's the
   simplest solution.
-* Have to deal with React's "children must have keys" warnings even though the warning doesn't apply to you.
 
 ## Koa example
 
