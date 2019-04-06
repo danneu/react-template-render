@@ -7,10 +7,10 @@
     "dependencies": {
         "babel-preset-react": "^6.24.1",
         "babel-register": "^6.26.0",
-        "koa": "^2.4.1",
-        "koa-logger": "^3.1.0",
+        "koa": "^2.7.0",
+        "koa-logger": "^3.2.0",
         "koa-router": "^7.3.0",
-        "prop-types": "^15.6.0",
-        "react": "^16.1.1"
+        "prop-types": "^15.7.2",
+        "react": "^16.8.6"
     }
 }

@@ -24,7 +24,7 @@ const db = {
     },
 }
 
-router.get('/', async ctx => {
+router.get('/', async (ctx) => {
     await ctx.render('homepage')
 })
 
@@ -33,7 +33,7 @@ router.get('/', async ctx => {
 
 let aboutHtml
 
-router.get('/about', async ctx => {
+router.get('/about', async (ctx) => {
     ctx.type = 'html'
 
     if (aboutHtml) {
@@ -46,7 +46,7 @@ router.get('/about', async ctx => {
     ctx.body = aboutHtml
 })
 
-router.get('/users', async ctx => {
+router.get('/users', async (ctx) => {
     const users = Object.values(allUsers)
     await ctx.render('users-list', {
         users,
@@ -54,7 +54,7 @@ router.get('/users', async ctx => {
     })
 })
 
-router.get('/users/:id', async ctx => {
+router.get('/users/:id', async (ctx) => {
     let { id } = ctx.params
     id = Number.parseInt(id, 10)
     ctx.assert(id, 404)

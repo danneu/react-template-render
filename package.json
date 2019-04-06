@@ -14,9 +14,9 @@
         "postpublish": "git push origin master --follow-tags"
     },
     "dependencies": {
-        "debug": "^3.1.0",
-        "react": "^16.1.1",
-        "react-dom": "^16.1.1"
+        "debug": "^4.1.1",
+        "react": "^16.8.6",
+        "react-dom": "^16.8.6"
     },
     "license": "MIT"
 }
