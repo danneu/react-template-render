@@ -8,7 +8,7 @@ const defaultOptions = {
     prefix: '<!doctype html>',
     parent: null,
     // If false, silence React's https://fb.me/react-warning-keys warning.
-    keyPropWarnings: true,
+    keyPropWarnings: false,
 }
 
 // The render object has two methods { string(), stream() }
@@ -19,7 +19,7 @@ module.exports = function makeRender(root, opts) {
     if (process.env.NODE_ENV !== 'production' && !opts.keyPropWarnings) {
         console.error = (() => {
             const _error = console.error
-            const re = /^Warning: Each child in an array or iterator should have a unique "key" prop/
+            const re = /^Warning: Each child in an array or iterator should have a unique "key" prop|^Warning: Each child in a list should have a unique "key" prop/
             return (...args) => {
                 const line = args[0]
                 if (re.test(line)) {
